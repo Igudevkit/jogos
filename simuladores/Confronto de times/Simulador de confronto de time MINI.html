@@ -4,87 +4,9 @@
   <meta charset="UTF-8" /> <!-- Define a codificação de caracteres como UTF-8 -->
   <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Garante que o layout seja responsivo em dispositivos móveis -->
   <title>Simulador Mini - Seleção de Times</title> <!-- Define o título da aba do navegador -->
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap'); /* Importa a fonte Montserrat do Google Fonts */
 
-    body {
-      font-family: 'Montserrat', sans-serif; /* Aplica a fonte Montserrat ao corpo da página */
-      background: linear-gradient(135deg, #0f172a, #1e293b); /* Define um fundo em gradiente */
-      margin: 0; /* Remove margens do corpo */
-      padding: 30px 20px; /* Adiciona espaçamento interno ao corpo */
-      color: #e0e7ff; /* Define a cor do texto */
-    }
+  <link rel="stylesheet" href="style.css">
 
-    h1 {
-      text-align: center; /* Centraliza o título */
-      color: #cbd5e1; /* Define a cor do título */
-      text-shadow: 0 0 6px rgba(100, 180, 255, 0.5); /* Aplica uma sombra suave ao texto */
-    }
-
-    .container {
-      max-width: 900px; /* Largura máxima da container */
-      margin: auto; /* Centraliza horizontalmente */
-      background: #1e293b; /* Define a cor de fundo */
-      padding: 30px; /* Espaçamento interno */
-      border-radius: 20px; /* Cantos arredondados */
-      box-shadow: 0 8px 30px rgba(14, 165, 233, 0.7); /* Sombra para dar profundidade */
-    }
-
-    .flex {
-      display: flex; /* Usa o layout flexbox */
-      gap: 20px; /* Espaçamento entre os elementos */
-      flex-wrap: wrap; /* Permite quebra de linha */
-      margin-bottom: 20px; /* Espaçamento inferior */
-    }
-
-    input, select {
-      padding: 14px; /* Espaçamento interno */
-      border-radius: 10px; /* Cantos arredondados */
-      border: 1px solid #374151; /* Borda sutil */
-      background: #2d3748; /* Fundo escuro */
-      color: #e0e7ff; /* Cor do texto */
-      font-size: 1rem; /* Tamanho da fonte */
-      flex: 1; /* Ocupa espaço igual dentro do flex container */
-    }
-
-    button {
-      padding: 12px 20px; /* Espaçamento interno */
-      background: #3b82f6; /* Cor de fundo do botão */
-      color: white; /* Cor do texto */
-      border: none; /* Remove borda */
-      border-radius: 10px; /* Cantos arredondados */
-      font-weight: bold; /* Deixa o texto em negrito */
-      cursor: pointer; /* Cursor tipo ponteiro */
-      transition: 0.3s; /* Animação de transição */
-    }
-
-    button:hover {
-      background: #2563eb; /* Cor ao passar o mouse */
-    }
-
-    ul {
-      list-style: none; /* Remove marcadores da lista */
-      padding-left: 0; /* Remove espaçamento à esquerda */
-    }
-
-    li {
-      background: #374151; /* Cor de fundo do item da lista */
-      margin-bottom: 8px; /* Espaçamento inferior */
-      padding: 10px; /* Espaçamento interno */
-      border-radius: 10px; /* Cantos arredondados */
-      display: flex; /* Layout flexbox */
-      justify-content: space-between; /* Espaça os elementos internamente */
-      align-items: center; /* Alinha verticalmente */
-    }
-
-    li span {
-      flex: 1; /* Faz o span ocupar espaço disponível */
-    }
-
-    .grupo-botoes button {
-      margin-left: 8px; /* Espaço entre os botões */
-    }
-  </style>
 </head>
 <body> <!-- Início do corpo da página -->
   <div class="container"> <!-- Container principal centralizado -->
@@ -105,107 +27,11 @@
     </div>
 
     <h2 id="placarResultado" style="text-align:center;"></h2> <!-- Exibição do resultado da simulação -->
-  </div>
+    <!--Campo de futebol de botão via Canvas-->
+    <canvas id="campo" width="600" height="400"
+        style="display: block;margin: 20px auto;border: 2px solid white;border-radius: 10px;background:green;"></canvas>
 
-  <script>
-    const times = []; // Array que armazena os times cadastrados
-    let indiceEdicao = -1; // Variável que guarda o índice do time em edição
+  <script src="js.js"></script>
 
-    function atualizarLista() { // Função que atualiza os elementos da lista e seletores
-      const elementoLista = document.getElementById('listaTimes'); // Pega o elemento da lista
-      const seletor1 = document.getElementById('selecaoTime1'); // Pega o primeiro seletor
-      const seletor2 = document.getElementById('selecaoTime2'); // Pega o segundo seletor
-      elementoLista.innerHTML = ''; // Limpa a lista
-      seletor1.innerHTML = ''; // Limpa o seletor 1
-      seletor2.innerHTML = ''; // Limpa o seletor 2
-
-      times.forEach((time, i) => { // Para cada time cadastrado
-        const item = document.createElement('li'); // Cria um novo item de lista
-        item.innerHTML = `<span>${time.nome} (Força: ${time.forca})</span>
-                          <div class="grupo-botoes">
-                            <button onclick="editarTime(${i})">Editar</button>
-                            <button onclick="removerTime(${i})">Remover</button>
-                          </div>`; // Insere os dados e botões no item
-        elementoLista.appendChild(item); // Adiciona o item na lista
-
-        const opcao1 = document.createElement('option'); // Cria opção para seletor 1
-        const opcao2 = document.createElement('option'); // Cria opção para seletor 2
-        opcao1.value = opcao2.value = i; // Define valor do índice
-        opcao1.textContent = opcao2.textContent = time.nome; // Define texto visível
-        seletor1.appendChild(opcao1); // Adiciona no seletor 1
-        seletor2.appendChild(opcao2); // Adiciona no seletor 2
-      });
-    }
-
-    document.getElementById('botaoAdicionar').addEventListener('click', () => { // Quando clicar no botão de adicionar
-      const nome = document.getElementById('campoNome').value.trim(); // Pega e limpa o nome do time
-      const forca = parseInt(document.getElementById('campoForca').value); // Converte a força em número inteiro
-
-      if (!nome || isNaN(forca) || forca < 0 || forca > 100) { // Valida os dados
-        alert('Preencha corretamente o nome e força do time (0-100)');
-        return;
-      }
-
-      if (indiceEdicao >= 0) { // Se estiver editando
-        times[indiceEdicao] = { nome, forca }; // Atualiza os dados do time
-        document.getElementById('botaoAdicionar').textContent = 'Adicionar Time'; // Altera texto do botão
-        indiceEdicao = -1; // Reseta o modo de edição
-      } else {
-        if (times.length >= 32) { // Limita a 32 times
-          alert('Limite de 32 times atingido.');
-          return;
-        }
-        times.push({ nome, forca }); // Adiciona novo time
-      }
-
-      document.getElementById('campoNome').value = ''; // Limpa campo de nome
-      document.getElementById('campoForca').value = ''; // Limpa campo de força
-      atualizarLista(); // Atualiza a lista
-    });
-
-    function editarTime(indice) { // Função que prepara os campos para edição
-      const time = times[indice]; // Pega o time pelo índice
-      document.getElementById('campoNome').value = time.nome; // Preenche o campo nome
-      document.getElementById('campoForca').value = time.forca; // Preenche o campo força
-      document.getElementById('botaoAdicionar').textContent = 'Salvar Alterações'; // Altera texto do botão
-      indiceEdicao = indice; // Salva o índice em edição
-    }
-
-    function removerTime(indice) { // Função que remove um time da lista
-      if (confirm('Deseja remover este time?')) { // Confirmação do usuário
-        times.splice(indice, 1); // Remove o time do array
-        atualizarLista(); // Atualiza a lista
-      }
-    }
-
-    document.getElementById('botaoSimular').addEventListener('click', () => { // Quando clicar para simular
-      const indice1 = document.getElementById('selecaoTime1').value; // Pega índice do time 1
-      const indice2 = document.getElementById('selecaoTime2').value; // Pega índice do time 2
-
-      if (indice1 === indice2) { // Verifica se é o mesmo time
-        alert('Escolha dois times diferentes!');
-        return;
-      }
-
-      const time1 = times[indice1]; // Recupera o primeiro time
-      const time2 = times[indice2]; // Recupera o segundo time
-
-      const [gols1, gols2] = simularPlacar(time1.forca, time2.forca); // Simula o placar
-
-      document.getElementById('placarResultado').textContent = `${time1.nome} ${gols1} x ${gols2} ${time2.nome}`; // Exibe resultado
-    });
-
-    function simularPlacar(forca1, forca2) { // Função que calcula placar aleatório baseado nas forças
-      const total = forca1 + forca2; // Soma total das forças
-      const proporcao1 = forca1 / total; // Proporção do time 1
-      const proporcao2 = forca2 / total; // Proporção do time 2
-      return [
-        Math.floor(Math.random() * 5 * proporcao1), // Calcula gols aleatórios para time 1
-        Math.floor(Math.random() * 5 * proporcao2), // Calcula gols aleatórios para time 2
-      ];
-    }
-
-    atualizarLista(); // Atualiza a lista ao carregar a página
-  </script>
 </body>
 </html>
