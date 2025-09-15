@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap'); /* Importa a fonte Montserrat do Google Fonts */
+
+body {
+  font-family: 'Montserrat', sans-serif; /* Aplica a fonte Montserrat ao corpo da página */
+  background: linear-gradient(135deg, #0f172a, #1e293b); /* Define um fundo em gradiente */
+  margin: 0; /* Remove margens do corpo */
+  padding: 30px 20px; /* Adiciona espaçamento interno ao corpo */
+  color: #e0e7ff; /* Define a cor do texto */
+}
+
+h1 {
+  text-align: center; /* Centraliza o título */
+  color: #cbd5e1; /* Define a cor do título */
+  text-shadow: 0 0 6px rgba(100, 180, 255, 0.5); /* Aplica uma sombra suave ao texto */
+}
+
+.container {
+  max-width: 900px; /* Largura máxima da container */
+  margin: auto; /* Centraliza horizontalmente */
+  background: #1e293b; /* Define a cor de fundo */
+  padding: 30px; /* Espaçamento interno */
+  border-radius: 20px; /* Cantos arredondados */
+  box-shadow: 0 8px 30px rgba(14, 165, 233, 0.7); /* Sombra para dar profundidade */
+}
+
+.flex {
+  display: flex; /* Usa o layout flexbox */
+  gap: 20px; /* Espaçamento entre os elementos */
+  flex-wrap: wrap; /* Permite quebra de linha */
+  margin-bottom: 20px; /* Espaçamento inferior */
+}
+
+input, select {
+  padding: 14px; /* Espaçamento interno */
+  border-radius: 10px; /* Cantos arredondados */
+  border: 1px solid #374151; /* Borda sutil */
+  background: #2d3748; /* Fundo escuro */
+  color: #e0e7ff; /* Cor do texto */
+  font-size: 1rem; /* Tamanho da fonte */
+  flex: 1; /* Ocupa espaço igual dentro do flex container */
+}
+
+button {
+  padding: 12px 20px; /* Espaçamento interno */
+  background: #3b82f6; /* Cor de fundo do botão */
+  color: white; /* Cor do texto */
+  border: none; /* Remove borda */
+  border-radius: 10px; /* Cantos arredondados */
+  font-weight: bold; /* Deixa o texto em negrito */
+  cursor: pointer; /* Cursor tipo ponteiro */
+  transition: 0.3s; /* Animação de transição */
+}
+
+button:hover {
+  background: #2563eb; /* Cor ao passar o mouse */
+}
+
+ul {
+  list-style: none; /* Remove marcadores da lista */
+  padding-left: 0; /* Remove espaçamento à esquerda */
+}
+
+li {
+  background: #374151; /* Cor de fundo do item da lista */
+  margin-bottom: 8px; /* Espaçamento inferior */
+  padding: 10px; /* Espaçamento interno */
+  border-radius: 10px; /* Cantos arredondados */
+  display: flex; /* Layout flexbox */
+  justify-content: space-between; /* Espaça os elementos internamente */
+  align-items: center; /* Alinha verticalmente */
+}
+
+li span {
+  flex: 1; /* Faz o span ocupar espaço disponível */
+}
+
+.grupo-botoes button {
+  margin-left: 8px; /* Espaço entre os botões */
+}
